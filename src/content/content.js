@@ -1,12 +1,17 @@
-import * as React from 'react';
+import { React, Component } from 'react';
+import MainContent from './mainContent';
+import PlayingContent from './playingContent';
 
-class Content extends React.Component {
-	constructor(props){
-		super(props);
-	}
+
+class Content extends Component {
 
 	render(){
-		return <h1>Content</h1>;
+		return (
+			<div className="grid grid-cols-[1fr_400px]">
+				<MainContent />
+				<PlayingContent />
+			</div>
+		);
 	}
 }
 

@@ -11,16 +11,16 @@ function NotFound(){
 
 function Menu(){
   return (
-    <ul className="ml-6 text-slate-500 text-sm font-medium">
+    <ul className="ml-6 text-slate-400 text-sm font-medium">
 
       <h3 className="my-3 font-normal">
         Menu
       </h3>
       
       <li className="mb-3">
-        <NavLink 
+        <NavLink
           to="/"
-          className="hover:text-red-400">
+          className="hover:text-red-600">
           {({isActive}) => (
             <div className={isActive ? "text-red-500 border-r-2 border-red-500" : ""}>
               <p className="flex items-center space-x-3">
@@ -38,7 +38,7 @@ function Menu(){
       <li>
         <NavLink 
           to="/playlist"
-          className="hover:text-red-400">
+          className="hover:text-red-600">
           {({isActive}) => (
             <div className={isActive ? "text-red-500 border-r-2 border-red-500" : ""}>
               <p className="flex items-center space-x-3">
@@ -74,7 +74,7 @@ function Layout(){
         <Logo />
         <Menu />
       </nav>
-      
+
       <Outlet />
     </div>
   )
