@@ -1,15 +1,28 @@
 import { React, Component } from 'react';
 import heroImg from '../assets/hero.jpg';
-// import GetRecentlyPlayed from '../api/getRecently';
 
 
 
-function Card(props){
-	const songs = props.songs;
+class Card extends Component {
+	constructor(props){
+		super(props);
+		this.state = {id: ''};
 
-	return (
-		<li className="bg-slate-200 p-3 text-xs rounded-lg hover:bg-slate-300 cursor-pointer active:bg-slate-200">
-			<div className="">
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleClick(){
+		this.setState({
+			id: this.props.id
+		});
+	}
+
+	render(){
+		const songs = this.props.songs;
+		return (
+			<li 
+				className="bg-slate-200 p-3 text-xs rounded-lg hover:bg-slate-300 cursor-pointer active:bg-slate-200"
+				onClick={this.handleClick}>
 				<img
 					className="rounded-lg" 
 					src={songs.song_art_image_url} />
@@ -17,24 +30,39 @@ function Card(props){
 				<h4 className="font-medium mt-3 mb-1">
 					{songs.title}
 				</h4>
+
 				<p className="text-slate-500">
 					{songs.artist_names}
 				</p>
-			</div>
-		</li>
-	)
+				<span>{this.state.id}</span>
+			</li>
+		)	
+	}
 }
 
 
-function Cards(props){
-	const items = props.items;
-	return (
-		<ul className="grid grid-cols-5 gap-x-5 gap-y-8">
-			{items.map(item => (
-				<Card key={item.result.id} songs={item.result} />
-			))}
-		</ul>
-	)
+class Cards extends Component {
+	constructor(props){
+		super(props);
+	}
+
+	render(){
+		const items = this.props.items;
+
+		return (
+			<ul className="grid grid-cols-5 gap-x-5 gap-y-8 mt-10">
+				{items.map(item => (
+					<Card 
+						key={item.result.id}
+						id={item.result.id}
+						songs={item.result}
+					/>
+
+				))}
+			</ul>
+		)	
+	}
+	
 }
 
 
@@ -132,7 +160,8 @@ class SearchBar extends Component {
 		const value = this.props.value;
 
 		return (
-			<div className="w-2/3">
+			<div 
+				className="w-2/3">
 				<input
 					className="text-slate-500 border border-slate-300 px-3 py-2 text-sm rounded-full w-full focus:outline-none focus:border-red-600"
 					type="text"
@@ -147,13 +176,13 @@ class SearchBar extends Component {
 
 function Header(props){
 	return (
-		<div 
-			className="flex items-center justify-between mt-3">
+		<div className="flex items-center justify-between mt-3">
 			<SearchBar value={props.value} onChange={props.onChange} />
 			<DarkMode />
 		</div>
 	)
 }
+
 
 
 function MainContent(props) {

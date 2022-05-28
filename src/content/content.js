@@ -9,18 +9,19 @@ class Content extends Component {
 		super(props)
 		this.state = {
 			isLoaded: true,
-			items: [],
-			keyword: ''
+			keyword: '',
+			items: []
 		}
 
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	handleChange(keyword){
+	handleChange(value){
 		this.setState({
-			keyword: keyword
+			keyword: value
 		})
 	}
+
 
 	async componentDidMount(){
 		const result = await getSongs('ed%20sheeran');
@@ -33,15 +34,10 @@ class Content extends Component {
 
 	async componentDidUpdate(prevState){
 		const keyword = this.state.keyword;
-		const spread = [...keyword].map(h => {
-			if(h === ' '){
-				return h = '%20';
-			}
-			return h;
-		}).join('');
+		const spread = [...keyword].map(h => (h === ' ') ? h = '%20' : h).join('');
 
-		if(this.state.items !== prevState.items && keyword !== ''){
-			const result = await getSongs(keyword);
+		if((this.state.items !== prevState.items) && (keyword !== '')){
+			const result = await getSongs(spread);
 			
 			this.setState({
 				isLoaded: true,
@@ -52,10 +48,11 @@ class Content extends Component {
 	
 	render(){
 		const items = this.state.items;
+		const value = this.state.keyword;
 
 		return (
 			<div className="grid grid-cols-[1fr_400px]">
-				<MainContent items={items} onChange={this.handleChange} />
+				<MainContent items={items}  value={value} onChange={this.handleChange} />
 				<PlayingContent />
 			</div>
 		);
