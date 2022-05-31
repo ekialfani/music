@@ -22,7 +22,6 @@ class Content extends Component {
 		})
 	}
 
-
 	async componentDidMount(){
 		const result = await getSongs('ed%20sheeran');
 

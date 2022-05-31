@@ -161,7 +161,7 @@ class SearchBar extends Component {
 
 		return (
 			<div 
-				className="w-2/3">
+				className="w-1/2">
 				<input
 					className="text-slate-500 border border-slate-300 px-3 py-2 text-sm rounded-full w-full focus:outline-none focus:border-red-600"
 					type="text"
