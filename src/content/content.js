@@ -1,6 +1,6 @@
 import { React, Component } from 'react';
 import MainContent from './mainContent';
-import PlayingContent from './playingContent';
+import PlayedContent from './playedContent';
 import getSongs from '../api/getSongs';
 
 
@@ -52,7 +52,7 @@ class Content extends Component {
 		return (
 			<div className="grid grid-cols-[1fr_400px]">
 				<MainContent items={items}  value={value} onChange={this.handleChange} />
-				<PlayingContent />
+				<PlayedContent />
 			</div>
 		);
 	}
