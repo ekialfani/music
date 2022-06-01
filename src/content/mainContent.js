@@ -6,35 +6,31 @@ import heroImg from '../assets/hero.jpg';
 class Card extends Component {
 	constructor(props){
 		super(props);
-		this.state = {id: ''};
 
 		this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleClick(){
-		this.setState({
-			id: this.props.id
-		});
+		this.props.onClick(this.props.id);
 	}
 
 	render(){
-		const songs = this.props.songs;
+		const song = this.props.song;
 		return (
 			<li 
 				className="bg-slate-200 p-3 text-xs rounded-lg hover:bg-slate-300 cursor-pointer active:bg-slate-200"
 				onClick={this.handleClick}>
 				<img
 					className="rounded-lg" 
-					src={songs.song_art_image_url} />
+					src={song.album.cover} />
 
 				<h4 className="font-medium mt-3 mb-1">
-					{songs.title}
+					{song.title_short}
 				</h4>
 
 				<p className="text-slate-500">
-					{songs.artist_names}
+					{song.artist.name}
 				</p>
-				<span>{this.state.id}</span>
 			</li>
 		)	
 	}
@@ -44,6 +40,12 @@ class Card extends Component {
 class Cards extends Component {
 	constructor(props){
 		super(props);
+
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleClick(id){
+		this.props.onClick(id);
 	}
 
 	render(){
@@ -53,9 +55,10 @@ class Cards extends Component {
 			<ul className="grid grid-cols-5 gap-x-5 gap-y-8 mt-10">
 				{items.map(item => (
 					<Card 
-						key={item.result.id}
-						id={item.result.id}
-						songs={item.result}
+						key={item.id}
+						id={item.id}
+						song={item}
+						onClick={this.handleClick}
 					/>
 
 				))}
@@ -165,7 +168,7 @@ class SearchBar extends Component {
 				<input
 					className="text-slate-500 border border-slate-300 px-3 py-2 text-sm rounded-full w-full focus:outline-none focus:border-red-600"
 					type="text"
-					value={this.props.value}
+					value={value}
 					onChange={this.handleChange}
 					placeholder="search songs..." />
 			</div>
@@ -187,10 +190,16 @@ function Header(props){
 
 function MainContent(props) {
 	return (
-		<div className="px-8 py-10">
-			<Header value={props.value} onChange={props.onChange} />
+		<div className="px-8 py-10 h-[100vh] overflow-auto">
+			<Header 
+				value={props.value}
+				onChange={props.onChange}
+			 />
 			<Hero />
-			<Cards items={props.items} />
+			<Cards 
+				items={props.items}
+				onClick={props.onClick}
+			/>
 		</div>
 	)
 }

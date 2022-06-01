@@ -1,7 +1,7 @@
 import { React, Component } from 'react';
 import MainContent from './mainContent';
 import PlayedContent from './playedContent';
-import getSongs from '../api/getSongs';
+import { getSongByKeyword } from '../api/getSongs';
 
 
 class Content extends Component {
@@ -10,10 +10,12 @@ class Content extends Component {
 		this.state = {
 			isLoaded: true,
 			keyword: '',
+			songId: '',
 			items: []
 		}
 
 		this.handleChange = this.handleChange.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleChange(value){
@@ -22,12 +24,17 @@ class Content extends Component {
 		})
 	}
 
-	async componentDidMount(){
-		const result = await getSongs('ed%20sheeran');
+	handleClick(id){
+		this.setState({
+			songId: id
+		});
+	}
 
+	async componentDidMount(){
+		const result = await getSongByKeyword('eminem');
 		this.setState({
 			isLoaded: true,
-			items: result.hits
+			items: result.data
 		})
 	}
 
@@ -35,24 +42,34 @@ class Content extends Component {
 		const keyword = this.state.keyword;
 		const spread = [...keyword].map(h => (h === ' ') ? h = '%20' : h).join('');
 
-		if((this.state.items !== prevState.items) && (keyword !== '')){
-			const result = await getSongs(spread);
+		const result = await getSongByKeyword(spread);
 			
+		if(result.data){
 			this.setState({
-				isLoaded: true,
-				items: result.hits
+				items: result.data
 			})
 		}
+		
 	}
 	
 	render(){
 		const items = this.state.items;
 		const value = this.state.keyword;
+		let songId;
+		if(this.state.songId !== ''){
+			songId = this.state.songId;
+		}
+
 
 		return (
 			<div className="grid grid-cols-[1fr_400px]">
-				<MainContent items={items}  value={value} onChange={this.handleChange} />
-				<PlayedContent />
+				<MainContent 
+					items={items}
+					value={value}
+					onChange={this.handleChange} 
+					onClick={this.handleClick}
+				/>
+				<PlayedContent songId={songId} />
 			</div>
 		);
 	}

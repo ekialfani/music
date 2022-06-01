@@ -16,3 +16,66 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #fff;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+
+/*audio::-webkit-media-controls-panel {
+  background-color: #fff;
+  border: 1px solid black;
+  position: relative;
+}
+
+audio::-webkit-media-controls-play-button {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  bottom:  -10px;
+  right: 45%;
+  background-color: red;
+  border-radius: 50%;
+  z-index: 999;
+}*/
+
+
+/*audio::-webkit-media-controls-panel {
+  background-color: #56AEFF;
+}*/
+
+/*audio::-webkit-media-controls-time-remaining-display {
+  color: #fff;
+  position: absolute;
+  right: 0;
+}
+
+
+audio::-webkit-media-controls-timeline {
+  width: 100%;
+  background-color: #B1D4E0;
+  border-radius: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+audio::-webkit-media-controls-volume-slider {
+  display: none;
+}*/

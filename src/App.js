@@ -69,7 +69,7 @@ function Logo(){
 
 function Layout(){
   return (
-    <div className="grid grid-cols-[200px_1fr]">
+    <div className="grid grid-cols-[200px_1fr] h-[100vh]">
       <nav className="border-r border-slate-300">
         <Logo />
         <Menu />

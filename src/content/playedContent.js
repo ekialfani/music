@@ -1,6 +1,6 @@
 import { React, Component } from 'react';
 import castle from '../assets/castle.jpg';
-import toxic from '../assets/BoyWithUke-Toxic-Lyrics_GXppz1MMzNA.mp3';
+import { getSongById } from '../api/getSongs';
 
 
 function Heading(){
@@ -17,35 +17,67 @@ function Heading(){
 }
 
 class Played extends Component {
+	constructor(props){
+		super(props);
+		this.state = {song: []};
+	}
+
+	async componentDidMount(){
+		const result = await getSongById('1109731');
+		if(result !== result.error){
+			this.setState({
+				song: result
+			})	
+		}
+		
+	}
+
+	async componentDidUpdate(prevProps){
+		if(this.props.songId !== prevProps.songId){
+			const result = await getSongById(this.props.songId);
+			this.setState({
+				song: result
+			})
+		}
+	}	
+
+
 	render(){
+		const song = this.state.song;
+		const album = {...song.album};
+		const artist = {...song.artist};
+
 		return (
 			<div className="text-center mt-10">
 				<h4 className="font-bold text-sm text-slate-800">
-					Castle on the Hill
+					{song.title_short}
 				</h4>
 
 				<p className="text-sm text-slate-500">
-					Ed Sheeran
+					{artist.name}
 				</p>
 				<div className="border border-slate-200 p-5 rounded-xl w-48 mx-auto mt-3">
 					<img
 						className="w-full rounded-xl" 
-						src={castle} />
+						src={album.cover} />
 				</div>
-				<audio controls className="mt-5 mx-auto">
-					<source src={toxic} type="audio/mp3" />
-				</audio>
+				<audio 
+					className="mx-auto mt-3"
+					src={song.preview}
+					autoplay="true"
+					controls
+				/>
 			</div>
 		)
 	}
 }
 
 
-function PlayedContent(){
+function PlayedContent(props){
 	return (
 		<div className="border-l border-slate-200 p-6">
 			<Heading />
-			<Played />
+			<Played songId={props.songId} />
 		</div>
 	)
 }
