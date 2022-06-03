@@ -3,6 +3,16 @@
 @tailwind utilities;
 
 
+.slider {
+  width: 90%;
+  height: 5px;
+}
+
+
+.slider::-webkit-slider-thumb {
+  opacity: 0;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

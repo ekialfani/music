@@ -1,7 +1,63 @@
 import { React, Component } from 'react';
 import castle from '../assets/castle.jpg';
 import { getSongById } from '../api/getSongs';
+import toxic from '../assets/BoyWithUke-Toxic-Lyrics_GXppz1MMzNA.mp3';
 
+
+
+function PlayButton(props){
+	return (
+		<button onClick={props.onClick}>
+			<svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-600 hover:text-red-500" viewBox="0 0 20 20" fill="currentColor">
+			  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+			</svg>
+		</button>
+	)
+}
+
+
+function PauseButton(props){
+	return (
+		<button onClick={props.onClick}>
+			<svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-600 hover:text-red-500" viewBox="0 0 20 20" fill="currentColor">
+			  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+			</svg>
+		</button>
+	)
+}
+
+
+class Track extends Component {
+	constructor(props){
+		super(props);
+
+		this.state = {play: false};
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleClick(){
+		this.setState(state => ({
+			play: !state.play
+		}))
+	}
+
+	render(){
+		const play = this.state.play;
+		const button = (
+			play ? 
+				<PauseButton onClick={this.handleClick} /> : 
+				<PlayButton onClick={this.handleClick} />
+		)
+
+		return (
+			<div>
+				<input type="range" max="29" value="10" className="slider" />
+				{button}
+				
+			</div>
+		)
+	}
+}
 
 function Heading(){
 	return (
@@ -46,7 +102,6 @@ class Played extends Component {
 		const song = this.state.song;
 		const album = {...song.album};
 		const artist = {...song.artist};
-
 		return (
 			<div className="text-center mt-10">
 				<h4 className="font-bold text-sm text-slate-800">
@@ -61,10 +116,10 @@ class Played extends Component {
 						className="w-full rounded-xl" 
 						src={album.cover} />
 				</div>
+				<Track />
 				<audio 
 					className="mx-auto mt-3"
 					src={song.preview}
-					autoplay="true"
 					controls
 				/>
 			</div>

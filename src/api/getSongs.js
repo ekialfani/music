@@ -10,7 +10,7 @@ function getSongByKeyword(keyword){
 	return fetch('https://deezerdevs-deezer.p.rapidapi.com/search?q=' +keyword, options)
 		.then(response => response.json())
 		.then(response => response)
-		.catch(err => console.error(err));
+		.catch(error => error);
 }
 
 function getSongById(id){
@@ -26,7 +26,7 @@ function getSongById(id){
 	return fetch('https://deezerdevs-deezer.p.rapidapi.com/track/' +id, options)
 		.then(response => response.json())
 		.then(response => response)
-		.catch(err => console.error(err));
+		.catch(error => error);
 }
 
 export { getSongByKeyword, getSongById };

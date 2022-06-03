@@ -1,3 +1,10 @@
+import PlayedContent from '../content/playedContent';
+
 export default function Playlist(){
-	return <h1>Playlist</h1>;
+	return (
+		<div className="grid grid-cols-[1fr_400px]">
+			<h1 className="text-xl text-center font-bold mt-6">Played Content</h1>
+			<PlayedContent />
+		</div>
+	);
 }
