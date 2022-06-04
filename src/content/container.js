@@ -1,5 +1,7 @@
-import { React, Component } from 'react';
+import { React, Component, Fragment } from 'react';
 import heroImg from '../assets/hero.jpg';
+import PlayedContent from '../content/playedContent';
+import { getSongByKeyword } from '../api/getSongs';
 
 
 
@@ -177,32 +179,116 @@ class SearchBar extends Component {
 }
 
 
-function Header(props){
+function MainContent(props){
 	return (
-		<div className="flex items-center justify-between mt-3">
-			<SearchBar value={props.value} onChange={props.onChange} />
-			<DarkMode />
-		</div>
+		<main className="px-8 py-10 h-[100vh] overflow-auto">
+			{props.children}
+		</main>
 	)
 }
 
 
+class Container extends Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			isLoaded: false,
+			error: null,
+			keyword: '',
+			songId: '',
+			items: []
+		}
 
-function MainContent(props) {
-	return (
-		<div className="px-8 py-10 h-[100vh] overflow-auto">
-			<Header 
-				value={props.value}
-				onChange={props.onChange}
-			 />
-			<Hero />
-			<Cards 
-				items={props.items}
-				onClick={props.onClick}
-			/>
-		</div>
-	)
+		this.handleChange = this.handleChange.bind(this);
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleChange(value){
+		this.setState({
+			keyword: value
+		})
+	}
+
+
+	handleClick(id){
+		this.setState({
+			songId: id
+		});
+	}
+
+	async componentDidMount(){
+		const result = await getSongByKeyword('eminem');
+		if(result.message){
+			this.setState({
+				isLoaded: true,
+				error: result.message
+			})
+
+		}else if(result.total === 0){
+			this.setState({
+				isLoaded: true,
+				error: 'Music Not Found'
+			})
+
+		}else if(result.error && result.error.code === 4){
+			this.setState({
+				isLoaded: true,
+				error: result.error.message
+			})
+
+		}else {
+			this.setState({
+				isLoaded: true,
+				items: result.data
+			})
+		}
+
+	}
+
+	async componentDidUpdate(prevState){
+		const keyword = this.state.keyword;
+		const spread = [...keyword].map(h => (h === ' ') ? h = '%20' : h).join('');
+	}
+
+	render(){
+		const { isLoaded, error, keyword, songId, items } = this.state;
+
+		if(error){
+			return (
+				<h1>Error: {error}</h1>
+			);
+
+		}else if(!isLoaded){
+			return (
+				<h1>Loading...</h1>
+			);
+		}
+
+		return (
+			<div className="grid grid-cols-[1fr_400px]">
+				<MainContent>
+					<div className="flex items-center justify-between">
+						<SearchBar
+							value={keyword}
+							onChange={this.handleChange}
+						/>
+						<DarkMode />
+					</div>
+
+					<Hero />
+
+					<Cards 
+						items={items}
+						onClick={this.handleClick}
+					/>
+				</MainContent>
+
+				<PlayedContent songId={songId} />
+			</div>
+		)
+	}
+	
 }
 
 
-export default MainContent;
+export default Container;

@@ -89,12 +89,15 @@ class Played extends Component {
 	}
 
 	async componentDidUpdate(prevProps){
-		if(this.props.songId !== prevProps.songId){
-			const result = await getSongById(this.props.songId);
-			this.setState({
-				song: result
-			})
+		if(this.props.songId !== ''){
+			if(this.props.songId !== prevProps.songId){
+				const result = await getSongById(this.props.songId);
+				this.setState({
+					song: result
+				})
+			}
 		}
+		
 	}	
 
 
@@ -122,6 +125,7 @@ class Played extends Component {
 					src={song.preview}
 					controls
 				/>
+				<p>{this.props.songId}</p>
 			</div>
 		)
 	}
@@ -133,6 +137,7 @@ function PlayedContent(props){
 		<div className="border-l border-slate-200 p-6">
 			<Heading />
 			<Played songId={props.songId} />
+			{/*<p>{this.props.songId}</p>*/}
 		</div>
 	)
 }
